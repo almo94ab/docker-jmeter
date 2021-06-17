@@ -11,7 +11,7 @@ mkdir -p ${R_DIR}
 
 /bin/rm -f ${T_DIR}/test-plan.jtl ${T_DIR}/jmeter.log  > /dev/null 2>&1
 
-./run.sh -Dlog_level.jmeter=DEBUG \
+./runsmartgarden.sh -Dlog_level.jmeter=DEBUG \
 	-n -t ${T_DIR}/test-plan.jmx -l ${T_DIR}/test-plan.jtl -j ${T_DIR}/jmeter.log \
 	-e -o ${R_DIR}
 

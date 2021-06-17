@@ -26,6 +26,18 @@ RUN    apk update \
 	&& tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt  \
 	&& rm -rf /tmp/dependencies
 
+ARG VERSION=azcopy_linux_amd64_10.11.0
+
+RUN apk --update add --virtual build-dependencies --no-cache wget tar 
+RUN apk --update add libc6-compat ca-certificates
+
+RUN wget -O azcopyv10.tar https://aka.ms/downloadazcopy-v10-linux && \
+    tar -xf azcopyv10.tar && \
+    mkdir /app && \
+    mv ${VERSION}/azcopy /app/azcopy && \
+    rm -rf azcopy* && \
+    apk del build-dependencies
+
 # TODO: plugins (later)
 # && unzip -oq "/tmp/dependencies/JMeterPlugins-*.zip" -d $JMETER_HOME
 
@@ -33,8 +45,8 @@ RUN    apk update \
 ENV PATH $PATH:$JMETER_BIN
 
 # Entrypoint has same signature as "jmeter" command
-COPY entrypoint.sh /
+COPY entrypointsmartgarden.sh /
 
 WORKDIR	${JMETER_HOME}
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypointsmartgarden.sh"]
